@@ -4,4 +4,8 @@
 ](https://christiansto.github.io/se_project_aroundtheus/)
 
 
-# video: (not here yet)
+# video
+
+https://youtu.be/mcyM9xha8sc?feature=shared
+
+
