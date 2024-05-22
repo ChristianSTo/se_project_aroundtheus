@@ -12,7 +12,7 @@
   padding: 0px 19px;
   display: none;
 }
-.moda_opened {
+.modal_opened {
   display: flex;
 }
 .modal__container {
@@ -43,8 +43,12 @@
   position: absolute;
   bottom: calc(100% + 5px);
   left: calc(100% + 5px);
+  transition: opacity 0.3s;
 }
-
+.modal__close:hover {
+  opacity: 60%;
+  cursor: pointer;
+}
 .modal__title {
   font-family: "Inter", Arial, sans-serif;
   font-size: 24px;
