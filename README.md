@@ -14,7 +14,4 @@ Techniques: BEM method for consistency and legibility, grid display for stucture
 
 https://youtu.be/mcyM9xha8sc?feature=shared
 
-Thank you so much for your help! I learned a lot from this sprint. I will remember to use more advanced ways of wrting html and css even though some other ways might show the same visual result because the more advanced ways are much simpler to read and fix potential issues. 
-
-I hope all of the problems are now fixed. I double checked the dev tools for horizontal scroll and I do not see it anywhere now, unless the screen is super small. The desktop view for the 320 width screen looks weird, but the mobile view looks good. 
-
+Thank you so much reviewers!
