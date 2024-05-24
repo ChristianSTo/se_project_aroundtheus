@@ -17,8 +17,9 @@
   flex-direction: column;
 }
 .gallery__image {
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: cover;
+  height: 282px;
 }
 .gallery__info {
   display: flex;
@@ -46,7 +47,7 @@
   margin: 0px 0px 0px auto;
   padding: 0px;
   border: none;
-  background-color: transparent;
+  background: url("../images/likeIcon.svg") no-repeat center transparent;
   transition: opacity 0.5s;
 }
 .gallery__like-button:hover {

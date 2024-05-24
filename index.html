@@ -43,7 +43,7 @@
         </section>
         <section class="gallery page__section">
           <ul class="gallery__grid">
-            <li class="gallery__card">
+            <!--<li class="gallery__card">
               <img
                 src="./images/yosemite-valley.jpg"
                 alt="yosemite valley"
@@ -51,13 +51,7 @@
               />
               <div class="gallery__info">
                 <h2 class="gallery__label">Yosemite Valley</h2>
-                <button type="button" class="gallery__like-button">
-                  <img
-                    src="./images/likeIcon.svg"
-                    alt="like icon"
-                    class="gallery__like-icon"
-                  />
-                </button>
+                <button type="button" class="gallery__like-button"></button>
               </div>
             </li>
             <li class="gallery__card">
@@ -68,13 +62,7 @@
               />
               <div class="gallery__info">
                 <h2 class="gallery__label">Lake Louise</h2>
-                <button type="button" class="gallery__like-button">
-                  <img
-                    src="./images/likeIcon.svg"
-                    alt="like icon"
-                    class="gallery__like-icon"
-                  />
-                </button>
+                <button type="button" class="gallery__like-button"></button>
               </div>
             </li>
             <li class="gallery__card">
@@ -85,13 +73,7 @@
               />
               <div class="gallery__info">
                 <h2 class="gallery__label">Bald Mountains</h2>
-                <button type="button" class="gallery__like-button">
-                  <img
-                    src="./images/likeIcon.svg"
-                    alt="like icon"
-                    class="gallery__like-icon"
-                  />
-                </button>
+                <button type="button" class="gallery__like-button"></button>
               </div>
             </li>
             <li class="gallery__card">
@@ -102,13 +84,7 @@
               />
               <div class="gallery__info">
                 <h2 class="gallery__label">Latemar</h2>
-                <button type="button" class="gallery__like-button">
-                  <img
-                    src="./images/likeIcon.svg"
-                    alt="like icon"
-                    class="gallery__like-icon"
-                  />
-                </button>
+                <button type="button" class="gallery__like-button"></button>
               </div>
             </li>
             <li class="gallery__card">
@@ -119,13 +95,7 @@
               />
               <div class="gallery__info">
                 <h2 class="gallery__label">Vanoise National Park</h2>
-                <button type="button" class="gallery__like-button">
-                  <img
-                    src="./images/likeIcon.svg"
-                    alt="like icon"
-                    class="gallery__like-icon"
-                  />
-                </button>
+                <button type="button" class="gallery__like-button"></button>
               </div>
             </li>
             <li class="gallery__card">
@@ -136,15 +106,9 @@
               />
               <div class="gallery__info">
                 <h2 class="gallery__label">Lago-di Braies</h2>
-                <button type="button" class="gallery__like-button">
-                  <img
-                    src="./images/likeIcon.svg"
-                    alt="like icon"
-                    class="gallery__like-icon"
-                  />
-                </button>
+                <button type="button" class="gallery__like-button"></button>
               </div>
-            </li>
+            </li>-->
           </ul>
         </section>
       </main>
@@ -174,13 +138,21 @@
             id="subtitle"
             placeholder="Explorer"
           />
-          <button class="modal__button">Save</button>
+          <button class="modal__save" type="submit">Save</button>
         </form>
       </div>
     </div>
+    <template id="card-template">
+      <li class="gallery__card">
+        <img src="" alt="" class="gallery__image" />
+        <div class="gallery__info">
+          <h2 class="gallery__label"></h2>
+          <button type="button" class="gallery__like-button"></button>
+        </div>
+      </li>
+    </template>
     <script src="./scripts/index.js"></script>
   </body>
 </html>
 <!--
-profile__title
-profile__subtitle-->
+-->
