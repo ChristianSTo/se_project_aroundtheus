@@ -66,8 +66,11 @@
   text-align: left;
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 13.26px;
+  margin-bottom: 30px;
+}
+.modal__input:last-of-type {
   margin-bottom: 48px;
-  padding-bottom: 13.34px;
 }
 
 .modal__save {
@@ -92,8 +95,22 @@
 }
 
 @media screen and (max-width: 756px) {
+  .modal__container {
+    width: 282px;
+    padding: 25px 22px;
+  }
+  .modal__title {
+    margin-bottom: 75px;
+  }
+  .modal__input {
+    padding-bottom: 13px;
+  }
+  .modal__input:last-of-type {
+    margin-bottom: 45px;
+  }
+
   .modal__close {
-    bottom: calc(100% + 30px);
+    bottom: calc(100% + 25px);
     left: calc(100% - 40px);
   }
 }
