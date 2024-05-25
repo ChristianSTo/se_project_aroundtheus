@@ -100,6 +100,7 @@
     padding: 25px 22px;
   }
   .modal__title {
+    font-size: 18px;
     margin-bottom: 75px;
   }
   .modal__input {
@@ -112,6 +113,8 @@
   .modal__close {
     bottom: calc(100% + 25px);
     left: calc(100% - 40px);
+    width: 26px;
+    height: 26px;
   }
 }
 

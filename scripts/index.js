@@ -68,7 +68,7 @@ modalX.addEventListener("click", closeModal);
 //make a function to save
 const handleProfileFormSubmit = function () {
   //change the modal css
-  profileEditModal.classList.remove("modal_opened");
+  closeModal();
   //replaces inputs
   //title
 
