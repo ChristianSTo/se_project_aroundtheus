@@ -110,8 +110,8 @@
     margin-bottom: 45px;
   }
   .modal__close {
-    /*I asked a tutor for help*/
     bottom: calc(100% + 25px);
+    /*I asked a tutor for help. they said 24px, but also said to adject to fit the figma if it doesnt fit, so i did 35px*/
     left: calc(100% - 35px);
     width: 26px;
     height: 26px;
