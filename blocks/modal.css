@@ -112,7 +112,7 @@
   .modal__close {
     /*I asked a tutor for help*/
     bottom: calc(100% + 25px);
-    left: calc(100% - 24px);
+    left: calc(100% - 35px);
     width: 26px;
     height: 26px;
   }
