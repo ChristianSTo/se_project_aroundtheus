@@ -45,14 +45,13 @@ const profileEditButton = document.querySelector("#profile-edit-button");
 const profileAddButton = document.querySelector("#profile-add-button");
 //select the modal for person edit
 const profileEditModal = document.querySelector("#profile-edit-modal");
-//select x button
-const modalPersonX = document.querySelector(".modal__close");
-const modalCreateX = document.querySelector("#modal-create-close");
-//selects save button
-const modalSave = document.querySelector(".modal__save");
-//select the form that contains the save button
+//select close button for each of the 3 modals
+const modalPersonCloseButton = document.querySelector("#modal-person-close");
+const modalCreateCloseButton = document.querySelector("#modal-create-close");
+const modalPhotoCloseButton = document.querySelector("#modal-photo-close");
+//select the form for person
 const formPerson = document.querySelector("#modal__form-person");
-//select the form that contains the create button
+//select the form for adding
 const formImg = document.querySelector("#modal__form-img");
 //select the modal for img edit
 const imgCreateModal = document.querySelector("#img-create-modal");
@@ -64,35 +63,34 @@ const createButton = document.querySelector(".modal__create");
 const imgTitle = document.querySelector("#img-title");
 //selects input for img URL:
 const imgURL = document.querySelector("#img-URL");
-
+//select the photo modal
+const photoModal = document.querySelector("#photo-modal");
 /*********************************************
 Functions
 **********************************************/
 
-//function to add css to person modal
+//univseral function to open modals
+function openModal(modal) {
+  modal.classList.add("modal_opened");
+}
+//univseral function to close modals
+function closeModal(modal) {
+  modal.classList.remove("modal_opened");
+}
+//function to open person modal
 const openPersonModal = function () {
   //1/3
   //makes current text the input text when OPEN the modal
   inputTitle.value = profileTitle.textContent;
   inputSubTitle.value = profileSubTitle.textContent;
   //change the modal css
-  profileEditModal.classList.add("modal_opened");
-};
-
-//function to remove css from modals
-const closeEditModal = function () {
-  profileEditModal.classList.remove("modal_opened");
-  //putting this here doesnt work somehow: imgCreateModal.classList.remove("modal_opened");
-};
-const closeCreateModal = function () {
-  //somehow needs seperate function
-  imgCreateModal.classList.remove("modal_opened");
+  openModal(profileEditModal);
 };
 
 //make a function to save person
 const handleProfileFormSubmit = function () {
-  //change the modal css
-  closeEditModal();
+  //close the modal
+  closeModal(profileEditModal);
   //replaces inputs
   //title
   profileTitle.textContent = inputTitle.value;
@@ -132,9 +130,6 @@ function getCardElement(cardData) {
   const trashButton = cardElement.querySelector(".gallery__delete-button");
   //click the trash button to delete card
   trashButton.addEventListener("click", deleteCard);
-
-  //select the photo modal
-  const photoModal = document.querySelector("#photo-modal");
   //select box-photo
   const boxPhoto = document.querySelector(".modal__box-photo");
   //select box-title
@@ -142,23 +137,17 @@ function getCardElement(cardData) {
   //function to open photo
   const openPhoto = function () {
     //reveals modal
-    photoModal.classList.add("modal_opened");
+    openModal(photoModal);
     //changes photo to clicked photo
     boxPhoto.src = cardPhoto.src;
     boxPhoto.alt = cardPhoto.alt;
     boxTitle.textContent = cardTitle.textContent;
   };
-  //select x button
-  const modalPhotoX = document.querySelector("#modal-photo-close");
+
   //select picture (already selected as cardPhoto)
   //click cardPhoto to open photo
   cardPhoto.addEventListener("click", openPhoto);
-  //function to close photo
-  const closePhotoModal = function () {
-    photoModal.classList.remove("modal_opened");
-  };
-  //click x button to close person modal
-  modalPhotoX.addEventListener("click", closePhotoModal);
+
   //return the ready HTML element with the filled-in data
   return cardElement;
 }
@@ -171,13 +160,13 @@ initialCards.forEach((cardData) => {
 
 const openImgModal = function () {
   //change the modal css
-  imgCreateModal.classList.add("modal_opened");
+  openModal(imgCreateModal);
 };
 
 //make a function to create
 const handleImgFormSubmit = function () {
   //close the modal
-  closeCreateModal();
+  closeModal(imgCreateModal);
   //create new card
   const newCard = {
     name: imgTitle.value,
@@ -186,9 +175,9 @@ const handleImgFormSubmit = function () {
   const cardElement = getCardElement(newCard);
 
   cardGallery.prepend(cardElement);
+
   //reset inputs
-  imgTitle.value = "";
-  imgURL.value = "";
+  formImg.reset();
 };
 
 /*********************************************
@@ -196,11 +185,19 @@ Events
 **********************************************/
 //click edit button to open person modal
 profileEditButton.addEventListener("click", openPersonModal);
-//click x button to close person modal
-modalPersonX.addEventListener("click", closeEditModal);
-modalCreateX.addEventListener("click", closeCreateModal);
+//click close (x) button to close modals
+modalPersonCloseButton.addEventListener("click", () => {
+  closeModal(profileEditModal);
+});
+modalCreateCloseButton.addEventListener("click", () => {
+  closeModal(imgCreateModal);
+});
+modalPhotoCloseButton.addEventListener("click", () => {
+  closeModal(photoModal);
+});
 //click add button to open img modal
 modalAdd.addEventListener("click", openImgModal);
+
 //listens for the submit, prevents reload on save and calls handleProfileFormSubmit handleImgFormSubmit function
 formPerson.addEventListener("submit", function (event) {
   event.preventDefault();

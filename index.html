@@ -58,7 +58,11 @@
 
     <div class="modal" id="profile-edit-modal">
       <div class="modal__container">
-        <button type="button" class="modal__close"></button>
+        <button
+          type="button"
+          class="modal__close"
+          id="modal-person-close"
+        ></button>
         <h2 class="modal__title">Edit profile</h2>
         <form class="modal__form" id="modal__form-person">
           <input
@@ -67,6 +71,7 @@
             name="title"
             id="title"
             placeholder="Title"
+            required
           />
           <input
             type="text"
@@ -74,6 +79,7 @@
             name="subtitle"
             id="subtitle"
             placeholder="Subtitle"
+            required
           />
           <button type="submit" class="modal__save">Save</button>
         </form>
@@ -99,6 +105,7 @@
             name="img-title"
             id="img-title"
             placeholder="Title"
+            required
           />
           <!-- change id -->
           <input
@@ -107,6 +114,7 @@
             name="img-URL"
             id="img-URL"
             placeholder="Image URL"
+            required
           />
           <button type="submit" class="modal__create">Create</button>
         </form>
@@ -138,6 +146,6 @@
         <button type="button" class="gallery__delete-button"></button>
       </li>
     </template>
-    <script src="./scripts/index.js"></script>
+    <script src="./scripts/index.js" defer></script>
   </body>
 </html>
