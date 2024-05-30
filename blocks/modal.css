@@ -1,5 +1,9 @@
 .modal {
+  /*display: flex; is for opened*/
   display: flex;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s, opacity 0.5s linear;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -10,10 +14,34 @@
   align-items: center;
   justify-content: center;
   padding: 0px 19px;
-  display: none;
 }
 .modal_opened {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+.modal__box {
+  position: relative;
+  margin: 0px;
   display: flex;
+  flex-direction: column;
+}
+.modal__box-photo {
+  width: 100%;
+  max-width: 75vw;
+  max-height: 75vh;
+  margin: 0px;
+  border: none;
+}
+.modal__box-title {
+  color: #fff;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.52px;
+  text-align: left;
+  margin: 0px;
+  margin-top: 10px;
 }
 .modal__container {
   position: relative;
@@ -34,7 +62,8 @@
   align-items: left;
 }
 
-.modal__close {
+.modal__close,
+.modal__close-photo {
   background: url("../images/close-Icon.svg") no-repeat center transparent;
   background-size: cover;
   width: 40px;
@@ -45,7 +74,8 @@
   left: calc(100% + 5px);
   transition: opacity 0.3s;
 }
-.modal__close:hover {
+.modal__close:hover,
+.modal__close-photo:hover {
   opacity: 60%;
   cursor: pointer;
 }
@@ -73,7 +103,9 @@
   margin-bottom: 48px;
 }
 
-.modal__save {
+/* has two classes since each button does different things*/
+.modal__save,
+.modal__create {
   width: 100%;
   height: 50.15px;
   border-radius: 2px;
@@ -89,8 +121,9 @@
   transition: opacity 0.3s;
 }
 
-.modal__save:hover {
-  opacity: 60%;
+.modal__save:hover,
+.modal__create:hover {
+  opacity: 80%;
   cursor: pointer;
 }
 
@@ -111,14 +144,24 @@
   }
   .modal__close {
     bottom: calc(100% + 25px);
-    /*I asked a tutor for help. they said 24px, but also said to adject to fit the figma if it doesnt fit, so i did 35px*/
     left: calc(100% - 35px);
     width: 26px;
     height: 26px;
   }
-  .modal__save {
+  .modal__save,
+  .modal__create {
     font-size: 14px;
+  }
+  .modal__box-photo {
+    width: 240px;
+    height: 300px;
+  }
+  .modal__close-photo {
+    width: 30px;
+    height: 30px;
+    bottom: calc(100% + 3px);
+    left: calc(100% + 3px);
   }
 }
 
-/* */
+/* end */

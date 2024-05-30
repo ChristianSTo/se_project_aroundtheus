@@ -15,11 +15,15 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .gallery__image {
   object-fit: cover;
   object-position: cover;
   height: 282px;
+}
+.gallery__image:hover {
+  cursor: pointer;
 }
 .gallery__info {
   display: flex;
@@ -50,8 +54,27 @@
   background: url("../images/likeIcon.svg") no-repeat center transparent;
   transition: opacity 0.5s;
 }
+.gallery__like-button_clicked {
+  background: url("../images/likeIconBlack.svg") no-repeat center transparent;
+}
 .gallery__like-button:hover {
   opacity: 50%;
+  cursor: pointer;
+}
+.gallery__delete-button {
+  width: 18px;
+  height: 19.3px;
+  margin: 0px 0px 0px auto;
+  padding: 0px;
+  border: none;
+  background: url("../images/trash.svg") no-repeat center transparent;
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  transition: opacity 0.5s;
+}
+.gallery__delete-button:hover {
+  opacity: 60%;
   cursor: pointer;
 }
 @media screen and (max-width: 801px) {

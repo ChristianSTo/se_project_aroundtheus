@@ -39,7 +39,11 @@
             <p class="profile__subtitle">Explorer</p>
           </div>
 
-          <button type="button" class="profile__add-button"></button>
+          <button
+            type="button"
+            class="profile__add-button"
+            id="profile-add-button"
+          ></button>
         </section>
         <section class="gallery page__section">
           <ul class="gallery__grid"></ul>
@@ -54,9 +58,9 @@
 
     <div class="modal" id="profile-edit-modal">
       <div class="modal__container">
-        <button class="modal__close"></button>
+        <button type="button" class="modal__close"></button>
         <h2 class="modal__title">Edit profile</h2>
-        <form class="modal__form">
+        <form class="modal__form" id="modal__form-person">
           <input
             type="text"
             class="modal__input"
@@ -71,10 +75,59 @@
             id="subtitle"
             placeholder="Subtitle"
           />
-          <button class="modal__save" type="submit">Save</button>
+          <button type="submit" class="modal__save">Save</button>
         </form>
       </div>
     </div>
+
+    <!-- Modal to create for Sprint 5 (essentially same design as modal in Sprint 4)-->
+
+    <!-- change id -->
+    <div class="modal" id="img-create-modal">
+      <div class="modal__container">
+        <button
+          type="button"
+          class="modal__close"
+          id="modal-create-close"
+        ></button>
+        <h2 class="modal__title">New Place</h2>
+        <form class="modal__form" id="modal__form-img">
+          <!-- change id -->
+          <input
+            type="text"
+            class="modal__input"
+            name="img-title"
+            id="img-title"
+            placeholder="Title"
+          />
+          <!-- change id -->
+          <input
+            type="text"
+            class="modal__input"
+            name="img-URL"
+            id="img-URL"
+            placeholder="Image URL"
+          />
+          <button type="submit" class="modal__create">Create</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal to open photo for Sprint 5 -->
+    <div class="modal" id="photo-modal">
+      <!-- box to contain img and title of photo-->
+      <div class="modal__box">
+        <img src="" alt="" class="modal__box-photo" />
+        <p class="modal__box-title">hello</p>
+        <!-- close button response is different than other close buttons-->
+        <button
+          type="button"
+          class="modal__close-photo"
+          id="modal-photo-close"
+        ></button>
+      </div>
+    </div>
+    <!-- card template -->
     <template id="card-template">
       <li class="gallery__card">
         <img src="" alt="" class="gallery__image" />
@@ -82,10 +135,9 @@
           <h2 class="gallery__label"></h2>
           <button type="button" class="gallery__like-button"></button>
         </div>
+        <button type="button" class="gallery__delete-button"></button>
       </li>
     </template>
     <script src="./scripts/index.js"></script>
   </body>
 </html>
-<!--
--->
