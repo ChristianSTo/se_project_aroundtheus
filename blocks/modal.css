@@ -43,7 +43,7 @@
   margin: 0px;
   margin-top: 10px;
 }
-.modal__container {
+.modal__container-form {
   position: relative;
   background-color: #fff;
   margin: 0px;
@@ -96,16 +96,39 @@
   text-align: left;
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 5px;
+  padding: 0px;
   padding-bottom: 13.26px;
-  margin-bottom: 30px;
-}
-.modal__input:last-of-type {
-  margin-bottom: 48px;
 }
 
-/* has two classes since each button does different things*/
-.modal__save,
-.modal__create {
+.modal__input:invalid {
+  border-bottom: 1px solid rgba(255, 0, 0, 1);
+}
+.modal__error {
+  visibility: hidden;
+  color: rgba(255, 0, 0, 1);
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.52px;
+  text-align: left;
+  border: none;
+  padding: 0px;
+  height: 17px;
+}
+.modal__error-title,
+.modal__error-img {
+  margin-bottom: 13px;
+}
+.modal__error-subtitle,
+.modal__error-url {
+  margin-bottom: 31.34px;
+}
+.modal__error_visible {
+  visibility: visible;
+}
+
+.modal__submit-button {
   width: 100%;
   height: 50.15px;
   border-radius: 2px;
@@ -121,10 +144,15 @@
   transition: opacity 0.3s;
 }
 
-.modal__save:hover,
-.modal__create:hover {
+.modal__submit-button:hover {
   opacity: 80%;
   cursor: pointer;
+}
+.modal__submit-button:disabled {
+  color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  cursor: not-allowed;
 }
 
 @media screen and (max-width: 756px) {
@@ -148,7 +176,7 @@
     width: 26px;
     height: 26px;
   }
-  .modal__save,
+  .modal__save-button,
   .modal__create {
     font-size: 14px;
   }

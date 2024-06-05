@@ -41,8 +41,6 @@ const cardTemplate = document.querySelector("#card-template").content;
 const cardGallery = document.querySelector(".gallery__grid");
 //selects the edit button in profile section
 const profileEditButton = document.querySelector("#profile-edit-button");
-//selects the add button in profile section
-const profileAddButton = document.querySelector("#profile-add-button");
 //select the modal for person edit
 const profileEditModal = document.querySelector("#profile-edit-modal");
 //select close button for each of the 3 modals
@@ -65,18 +63,71 @@ const imgTitle = document.querySelector("#img-title");
 const imgURL = document.querySelector("#img-URL");
 //select the photo modal
 const photoModal = document.querySelector("#photo-modal");
+//select the save person button
+const savePersonButton = document.querySelector(".modal__save-button");
+//select the create img button
+const createImgButton = document.querySelector(".modal__create-button");
+//select the error message for the title input
+const errorTitleMessage = document.querySelector(".modal__error-title");
+//select the error message for the subtitle input
+const errorSubTitleMessage = document.querySelector(".modal__error-subtitle");
+//selects img error message
+const errorImgMessage = document.querySelector(".modal__error-img");
+//selects url error message
+const errorUrlMessage = document.querySelector(".modal__error-url");
+//selects all modals
+const modals = document.querySelectorAll(".modal");
+//selects all modal containers
+const modalContainers = document.querySelectorAll(".modal__container");
+//makes an array from modalContainers
+const modalContainersArray = Array.from(modalContainers);
+
 /*********************************************
 Functions
 **********************************************/
 
 //univseral function to open modals
-function openModal(modal) {
+const openModal = function (modal) {
   modal.classList.add("modal_opened");
-}
+};
 //univseral function to close modals
-function closeModal(modal) {
+const closeModal = function (modal) {
   modal.classList.remove("modal_opened");
-}
+};
+//function to close any modal
+const closeAnyModal = function () {
+  modals.forEach((modals) => closeModal(modals));
+};
+
+//function to close any modal if press esc
+document.addEventListener("keydown", (evt) => {
+  if (evt.key === "Escape") {
+    closeAnyModal();
+  }
+});
+//function to close any modal if click away
+//each modal listens to a click
+modals.forEach(function (modal) {
+  modal.addEventListener("click", function (evt) {
+    evt.stopPropagation(); //prevents bubble effect
+    //make variable to know if inside modal container or not
+    let isInsideContainer = false;
+    //each container is checked if the event target (where the click occurs) is in it or not
+    modalContainersArray.forEach((modalContainer) => {
+      if (
+        evt.target === modalContainer ||
+        modalContainer.contains(evt.target)
+      ) {
+        isInsideContainer = true;
+      }
+    });
+    //if it's not inside, close the modal
+    if (!isInsideContainer) {
+      closeAnyModal();
+    }
+  });
+});
+
 //function to open person modal
 const openPersonModal = function () {
   //1/3
@@ -87,7 +138,7 @@ const openPersonModal = function () {
   openModal(profileEditModal);
 };
 
-//make a function to save person
+//function to save person
 const handleProfileFormSubmit = function () {
   //close the modal
   closeModal(profileEditModal);
@@ -161,6 +212,7 @@ initialCards.forEach((cardData) => {
 const openImgModal = function () {
   //change the modal css
   openModal(imgCreateModal);
+  disableButton(createImgButton);
 };
 
 //make a function to create
@@ -180,9 +232,8 @@ const handleImgFormSubmit = function () {
   formImg.reset();
 };
 
-/*********************************************
-Events
-**********************************************/
+//////////////////////////////////////////////////////
+
 //click edit button to open person modal
 profileEditButton.addEventListener("click", openPersonModal);
 //click close (x) button to close modals
@@ -207,6 +258,3 @@ formImg.addEventListener("submit", function (event) {
   event.preventDefault();
   handleImgFormSubmit();
 });
-
-//Project 5 notes
-//1/7 already using forEach, unless I overlooked
