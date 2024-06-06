@@ -67,6 +67,10 @@ const photoModal = document.querySelector("#photo-modal");
 const savePersonButton = document.querySelector(".modal__save-button");
 //select the create img button
 const createImgButton = document.querySelector(".modal__create-button");
+//select box-photo
+const boxPhoto = document.querySelector(".modal__box-photo");
+//select box-title
+const boxTitle = document.querySelector(".modal__box-title");
 //select the error message for the title input
 const errorTitleMessage = document.querySelector(".modal__error-title");
 //select the error message for the subtitle input
@@ -86,29 +90,33 @@ const modalContainersArray = Array.from(modalContainers);
 Functions
 **********************************************/
 
-//univseral function to open modals
-const openModal = function (modal) {
-  modal.classList.add("modal_opened");
-};
 //univseral function to close modals
 const closeModal = function (modal) {
   modal.classList.remove("modal_opened");
+  //stops listening for esc
+  document.removeEventListener("keydown", closeOnEsc);
 };
 //function to close any modal
 const closeAnyModal = function () {
-  modals.forEach((modals) => closeModal(modals));
+  modals.forEach(closeModal);
 };
-
 //function to close any modal if press esc
-document.addEventListener("keydown", (evt) => {
+const closeOnEsc = function (evt) {
   if (evt.key === "Escape") {
     closeAnyModal();
   }
-});
+};
+//univseral function to open modals
+const openModal = function (modal) {
+  modal.classList.add("modal_opened");
+  //starts to listen for esc
+  document.addEventListener("keydown", closeOnEsc);
+};
+
 //function to close any modal if click away
 //each modal listens to a click
 modals.forEach(function (modal) {
-  modal.addEventListener("click", function (evt) {
+  modal.addEventListener("mousedown", function (evt) {
     evt.stopPropagation(); //prevents bubble effect
     //make variable to know if inside modal container or not
     let isInsideContainer = false;
@@ -181,10 +189,7 @@ function getCardElement(cardData) {
   const trashButton = cardElement.querySelector(".gallery__delete-button");
   //click the trash button to delete card
   trashButton.addEventListener("click", deleteCard);
-  //select box-photo
-  const boxPhoto = document.querySelector(".modal__box-photo");
-  //select box-title
-  const boxTitle = document.querySelector(".modal__box-title");
+
   //function to open photo
   const openPhoto = function () {
     //reveals modal
@@ -212,7 +217,6 @@ initialCards.forEach((cardData) => {
 const openImgModal = function () {
   //change the modal css
   openModal(imgCreateModal);
-  disableButton(createImgButton);
 };
 
 //make a function to create
@@ -230,6 +234,7 @@ const handleImgFormSubmit = function () {
 
   //reset inputs
   formImg.reset();
+  disableButton(createImgButton);
 };
 
 //////////////////////////////////////////////////////

@@ -3,12 +3,12 @@ Validation JS
 **********************************************/
 
 //universal function to disable buttons
-const disableButton = function (evt) {
-  evt.disabled = true;
+const disableButton = function (button) {
+  button.disabled = true;
 };
 //universal function to enable buttons
-const enableButton = function (evt) {
-  evt.disabled = false;
+const enableButton = function (button) {
+  button.disabled = false;
 };
 
 //wrap validations in functions
@@ -37,7 +37,6 @@ const checkInputValidity = function (formElement, inputElement, options) {
     hideInputError(formElement, inputElement, options);
   }
 };
-
 const toggleButtonAbility = function (inputElements, submitButton) {
   let inValid = false;
   inputElements.forEach((inputElement) => {
@@ -54,9 +53,9 @@ const toggleButtonAbility = function (inputElements, submitButton) {
 
 //function for event listeners
 const setEventListeners = function (formElement, options) {
-  const { inputSelector } = options;
+  const { inputSelector, submitButtonSelector } = options;
   const inputElements = [...formElement.querySelectorAll(inputSelector)];
-  const submitButton = formElement.querySelector(".modal__submit-button");
+  const submitButton = formElement.querySelector(submitButtonSelector);
   inputElements.forEach((inputElement) => {
     inputElement.addEventListener("input", (evt) => {
       checkInputValidity(formElement, inputElement, options);
@@ -73,11 +72,6 @@ const enableValidation = function (options) {
     formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
-    //form checks if person inputs are filled in
-    formElement.addEventListener("input", () => {
-      //checkSubmitValidity(formElement, options);
-      //inputErrorMessage(formElement);
-    });
 
     setEventListeners(formElement, options);
   });
@@ -88,7 +82,7 @@ const config = {
   formSelector: ".modal__form",
   inputSelector: ".modal__input",
   submitButtonSelector: ".modal__submit-button",
-  inactiveButtonClass: "modal__submit-button:disabled", //not used in js? still works unless I missed something.
+  inactiveButtonClass: "modal__submit-button:disabled",
   inputErrorClass: "modal__error",
   errorClass: "modal__error_visible",
 };
@@ -100,17 +94,3 @@ enableValidation(config);
 /*********************************************
 END
 **********************************************/
-
-//notes for self
-//function to check for each submit button
-/*
-const checkSubmitValidity = function (formElement, { submitButtonSelector }) {
-  const submitButtons = formElement.querySelectorAll(submitButtonSelector);
-  submitButtons.forEach((submitButton) => {
-    if (formElement.checkValidity()) {
-      enableButton(submitButton);
-    } else {
-      disableButton(submitButton);
-    }
-  });
-};*/

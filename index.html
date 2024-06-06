@@ -60,7 +60,7 @@
       <div class="modal__container modal__container-form">
         <button
           type="button"
-          class="modal__close"
+          class="modal__close modal__close-form"
           id="modal-person-close"
         ></button>
         <h2 class="modal__title">Edit profile</h2>
@@ -104,7 +104,7 @@
       <div class="modal__container modal__container-form">
         <button
           type="button"
-          class="modal__close"
+          class="modal__close modal__close-form"
           id="modal-create-close"
         ></button>
         <h2 class="modal__title">New Place</h2>
@@ -136,7 +136,9 @@
           <button
             type="submit"
             class="modal__submit-button modal__create-button"
+            disabled
           >
+            <!-- tutor helped for disabling the create button on start -->
             Create
           </button>
         </form>
@@ -152,7 +154,7 @@
         <!-- close button response is different than other close buttons-->
         <button
           type="button"
-          class="modal__close-photo"
+          class="modal__close modal__close-photo"
           id="modal-photo-close"
         ></button>
       </div>
@@ -172,3 +174,12 @@
     <script src="./scripts/validate.js" defer></script>
   </body>
 </html>
+
+<!--
+  common classes:
+  forms all have modal__form,
+  inputs all have modal__input,
+  submit buttons all have modal__submit-button,
+  the cross buttons are the close buttons, now all have modal__close,
+  overlays have modal__container
+-->

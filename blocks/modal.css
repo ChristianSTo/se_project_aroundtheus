@@ -62,8 +62,7 @@
   align-items: left;
 }
 
-.modal__close,
-.modal__close-photo {
+.modal__close {
   background: url("../images/close-Icon.svg") no-repeat center transparent;
   background-size: cover;
   width: 40px;
@@ -74,8 +73,7 @@
   left: calc(100% + 5px);
   transition: opacity 0.3s;
 }
-.modal__close:hover,
-.modal__close-photo:hover {
+.modal__close:hover {
   opacity: 60%;
   cursor: pointer;
 }
@@ -156,10 +154,6 @@
 }
 
 @media screen and (max-width: 756px) {
-  .modal__container {
-    width: 282px;
-    padding: 25px 22px;
-  }
   .modal__title {
     font-size: 18px;
     margin-bottom: 75px;
