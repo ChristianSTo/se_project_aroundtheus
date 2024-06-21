@@ -1,3 +1,7 @@
+//import js files
+
+import FormValidator from "../components/FormValidator.js";
+import Card from "../components/Card.js";
 /*********************************************
 Initial cards array
 **********************************************/
@@ -89,7 +93,6 @@ const modalContainersArray = Array.from(modalContainers);
 /*********************************************
 Functions
 **********************************************/
-
 //univseral function to close modals
 const closeModal = function (modal) {
   modal.classList.remove("modal_opened");
@@ -157,61 +160,24 @@ const handleProfileFormSubmit = function () {
   profileSubTitle.textContent = inputSubTitle.value;
 };
 
-//Rendering cards
-function getCardElement(cardData) {
-  //clone the template element with all its content and store it in a cardElement variable
-  const cardElement = cardTemplate.cloneNode(true);
-  //access the card title and image and store them in variables
+//function to open preview photo. This will be in the class parameter
 
-  const cardTitle = cardElement.querySelector(".gallery__label");
-  const cardPhoto = cardElement.querySelector(".gallery__image");
+const handleImageClick = (data) => {
+  //const cardPhoto = cardElement.querySelector(".gallery__image");
+  //reveals modal
+  openModal(photoModal);
+  //changes photo to clicked photo
+  boxTitle.textContent = data._name;
+  boxPhoto.src = data._link;
+  boxPhoto.alt = data._name;
+};
 
-  //set the path to the image to the link field of the object
-  cardPhoto.src = cardData.link;
-  //set the image alt text to the name field of the object
-  cardPhoto.alt = cardData.name;
-  //set the card title to the name field of the object, too
-  cardTitle.textContent = cardData.name;
-  //function to change like button color
-  const toggleLike = function () {
-    likeButton.classList.toggle("gallery__like-button_clicked");
-  };
-  //select like button
-  const likeButton = cardElement.querySelector(".gallery__like-button");
-  //click the like button to change colors
-  likeButton.addEventListener("click", toggleLike);
-  const galleryCard = cardElement.querySelector(".gallery__card");
-  //function to delete
-  const deleteCard = function () {
-    galleryCard.remove();
-  };
-  //select trash button
-  const trashButton = cardElement.querySelector(".gallery__delete-button");
-  //click the trash button to delete card
-  trashButton.addEventListener("click", deleteCard);
-
-  //function to open photo
-  const openPhoto = function () {
-    //reveals modal
-    openModal(photoModal);
-    //changes photo to clicked photo
-    boxPhoto.src = cardPhoto.src;
-    boxPhoto.alt = cardPhoto.alt;
-    boxTitle.textContent = cardTitle.textContent;
-  };
-
-  //select picture (already selected as cardPhoto)
-  //click cardPhoto to open photo
-  cardPhoto.addEventListener("click", openPhoto);
-
-  //return the ready HTML element with the filled-in data
-  return cardElement;
-}
-
+//access the card template
+const cardSelector = "#card-template";
 //function runs the entire array for each element every time it runs the next
-initialCards.forEach((cardData) => {
-  const cardElement = getCardElement(cardData);
-  cardGallery.append(cardElement);
+initialCards.forEach((initialCard) => {
+  const card = new Card(initialCard, cardSelector, handleImageClick);
+  cardGallery.append(card.getView());
 });
 
 const openImgModal = function () {
@@ -226,15 +192,17 @@ const handleImgFormSubmit = function () {
   //create new card
   const newCard = {
     name: imgTitle.value,
-    link: imgURL.value, //prettier auto inserts a comma.
+    link: imgURL.value,
+    alt: imgTitle.value,
   };
-  const cardElement = getCardElement(newCard);
 
-  cardGallery.prepend(cardElement);
+  const card = new Card(newCard, cardSelector, handleImageClick);
+  cardGallery.prepend(card.getView());
 
   //reset inputs
   formImg.reset();
-  disableButton(createImgButton);
+  const formValidator = new FormValidator(config, formImg);
+  formValidator.disableButton(createImgButton);
 };
 
 //////////////////////////////////////////////////////
@@ -263,3 +231,29 @@ formImg.addEventListener("submit", function (event) {
   event.preventDefault();
   handleImgFormSubmit();
 });
+
+//move the config variable here
+const config = {
+  formSelector: ".modal__form",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__submit-button",
+  inactiveButtonClass: "modal__submit-button:disabled",
+  inputErrorClass: "modal__error",
+  errorClass: "modal__error_visible",
+};
+
+//call and make a new formValidator with the specific parameters of the relative object
+
+const editFormValidator = new FormValidator(config, formPerson);
+editFormValidator.enableValidation();
+
+const addFormValidator = new FormValidator(config, formImg);
+addFormValidator.enableValidation();
+
+const data = {
+  name: cardSelector.name,
+  link: cardSelector.src,
+  alt: cardSelector.alt,
+};
+
+const cardPreview = new Card(data, cardSelector, handleImageClick);

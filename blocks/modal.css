@@ -161,9 +161,6 @@
   .modal__input {
     padding-bottom: 13px;
   }
-  .modal__input:last-of-type {
-    margin-bottom: 45px;
-  }
   .modal__close {
     bottom: calc(100% + 25px);
     left: calc(100% - 35px);
