@@ -1,9 +1,9 @@
 //replaces the getCardElement function
 class Card {
   constructor(data, cardSelector, handleImageClick) {
-    this._name = data.name;
-    this._link = data.link;
-    this._alt = data.alt;
+    this.name = data.name;
+    this.link = data.link;
+    this.alt = data.alt;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
   }
@@ -18,11 +18,10 @@ class Card {
 
   //function to change like button color
   _handleToggleLike() {
-    this._likeButton.querySelector("gallery__like-button");
     this._likeButton.classList.toggle("gallery__like-button_clicked");
   }
   _handleDeleteCard() {
-    document.querySelector(".gallery__card").remove();
+    this._element.remove();
   }
 
   _setEventListeners() {
@@ -33,17 +32,17 @@ class Card {
     });
   }
   getView() {
-    const element = this._getTemplate();
-    this._cardPhoto = element.querySelector(".gallery__image");
-    this._likeButton = element.querySelector(".gallery__like-button");
-    this._trashButton = element.querySelector(".gallery__delete-button");
-    this._cardLabel = element.querySelector(".gallery__label");
-    this._cardPhoto.src = this._link;
-    this._cardPhoto.alt = this._name;
-    this._cardLabel.textContent = this._name;
+    this._element = this._getTemplate();
+    this._cardPhoto = this._element.querySelector(".gallery__image");
+    this._likeButton = this._element.querySelector(".gallery__like-button");
+    this._trashButton = this._element.querySelector(".gallery__delete-button");
+    this._cardLabel = this._element.querySelector(".gallery__label");
+    this._cardPhoto.src = this.link;
+    this._cardPhoto.alt = this.name;
+    this._cardLabel.textContent = this.name;
 
     this._setEventListeners();
-    return element;
+    return this._element;
   }
 } //end of class Card
 

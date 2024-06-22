@@ -41,7 +41,6 @@ const profileTitle = document.querySelector(".profile__title");
 const profileSubTitle = document.querySelector(".profile__subtitle");
 const inputTitle = document.querySelector("#title");
 const inputSubTitle = document.querySelector("#subtitle");
-const cardTemplate = document.querySelector("#card-template").content;
 const cardGallery = document.querySelector(".gallery__grid");
 //selects the edit button in profile section
 const profileEditButton = document.querySelector("#profile-edit-button");
@@ -59,30 +58,18 @@ const formImg = document.querySelector("#modal__form-img");
 const imgCreateModal = document.querySelector("#img-create-modal");
 //selects add button
 const modalAdd = document.querySelector("#profile-add-button");
-//selects the create button
-const createButton = document.querySelector(".modal__create");
 //selects input for img title:
 const imgTitle = document.querySelector("#img-title");
 //selects input for img URL:
 const imgURL = document.querySelector("#img-URL");
 //select the photo modal
 const photoModal = document.querySelector("#photo-modal");
-//select the save person button
-const savePersonButton = document.querySelector(".modal__save-button");
-//select the create img button
-const createImgButton = document.querySelector(".modal__create-button");
+
 //select box-photo
 const boxPhoto = document.querySelector(".modal__box-photo");
 //select box-title
 const boxTitle = document.querySelector(".modal__box-title");
-//select the error message for the title input
-const errorTitleMessage = document.querySelector(".modal__error-title");
-//select the error message for the subtitle input
-const errorSubTitleMessage = document.querySelector(".modal__error-subtitle");
-//selects img error message
-const errorImgMessage = document.querySelector(".modal__error-img");
-//selects url error message
-const errorUrlMessage = document.querySelector(".modal__error-url");
+
 //selects all modals
 const modals = document.querySelectorAll(".modal");
 //selects all modal containers
@@ -167,17 +154,24 @@ const handleImageClick = (data) => {
   //reveals modal
   openModal(photoModal);
   //changes photo to clicked photo
-  boxTitle.textContent = data._name;
-  boxPhoto.src = data._link;
-  boxPhoto.alt = data._name;
+  boxTitle.textContent = data.name;
+  boxPhoto.src = data.link;
+  boxPhoto.alt = data.name;
 };
+
+//function to create card
+
+function createCard(item) {
+  const card = new Card(item, cardSelector, handleImageClick);
+  return card.getView();
+}
 
 //access the card template
 const cardSelector = "#card-template";
 //function runs the entire array for each element every time it runs the next
 initialCards.forEach((initialCard) => {
-  const card = new Card(initialCard, cardSelector, handleImageClick);
-  cardGallery.append(card.getView());
+  const card = createCard(initialCard);
+  cardGallery.append(card);
 });
 
 const openImgModal = function () {
@@ -196,13 +190,11 @@ const handleImgFormSubmit = function () {
     alt: imgTitle.value,
   };
 
-  const card = new Card(newCard, cardSelector, handleImageClick);
-  cardGallery.prepend(card.getView());
+  const card = createCard(newCard);
+  cardGallery.prepend(card);
 
   //reset inputs
   formImg.reset();
-  const formValidator = new FormValidator(config, formImg);
-  formValidator.disableButton(createImgButton);
 };
 
 //////////////////////////////////////////////////////
@@ -210,15 +202,15 @@ const handleImgFormSubmit = function () {
 //click edit button to open person modal
 profileEditButton.addEventListener("click", openPersonModal);
 //click close (x) button to close modals
-modalPersonCloseButton.addEventListener("click", () => {
-  closeModal(profileEditModal);
+//select all close buttons
+const closeButtons = document.querySelectorAll(".modal__close");
+//universal close button handler
+
+closeButtons.forEach((button) => {
+  const modal = button.closest(".modal");
+  button.addEventListener("click", () => closeModal(modal));
 });
-modalCreateCloseButton.addEventListener("click", () => {
-  closeModal(imgCreateModal);
-});
-modalPhotoCloseButton.addEventListener("click", () => {
-  closeModal(photoModal);
-});
+
 //click add button to open img modal
 modalAdd.addEventListener("click", openImgModal);
 
@@ -250,10 +242,10 @@ editFormValidator.enableValidation();
 const addFormValidator = new FormValidator(config, formImg);
 addFormValidator.enableValidation();
 
-const data = {
-  name: cardSelector.name,
-  link: cardSelector.src,
-  alt: cardSelector.alt,
-};
+/*thanks for the suggestion about:
 
-const cardPreview = new Card(data, cardSelector, handleImageClick);
+"You can universally create instance
+s of validators for all forms in the proje
+ct storing them inside one object: formValidators."
+
+maybe I will use it in another project.*/
