@@ -6,9 +6,6 @@
     <meta name="author" content="Christian To" />
     <meta name="description" content="Explorer portfolio around the US" />
     <meta name="keywords" content="Around the US, Explore the US" />
-    <link rel="stylesheet" href="./pages/index.css" />
-    <link rel="shortcut icon" href="favicon.ico" />
-
     <title>Around The US</title>
   </head>
 
@@ -16,7 +13,7 @@
     <div class="page__content">
       <header class="header page__section">
         <img
-          src="./images/AroundtheUS.svg"
+          src="<%=require('./images/AroundtheUS.svg')%>"
           alt="Around the US"
           class="header__logo"
         />
@@ -24,7 +21,7 @@
       <main class="content">
         <section class="profile page__section">
           <img
-            src="./images/jacques-cousteau.jpg"
+            src="<%=require('./images/jacques-cousteau.jpg')%>"
             alt="Jacques Face"
             class="profile__picture"
           />
@@ -170,7 +167,6 @@
         <button type="button" class="gallery__delete-button"></button>
       </li>
     </template>
-    <script type="module" src="./pages/index.js" defer></script>
   </body>
 </html>
 

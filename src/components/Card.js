@@ -28,7 +28,7 @@ class Card {
     this._likeButton.addEventListener("click", () => this._handleToggleLike());
     this._trashButton.addEventListener("click", () => this._handleDeleteCard());
     this._cardPhoto.addEventListener("click", () => {
-      this._handleImageClick(this);
+      this._handleImageClick({ name: this.name, link: this.link });
     });
   }
   getView() {
