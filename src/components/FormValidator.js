@@ -5,6 +5,7 @@ class FormValidator {
     this._inputSelector = config.inputSelector;
     this._submitButtonSelector = config.submitButtonSelector;
     this._nactiveButtonClass = config.inactiveButtonClass;
+    this._inputInvalidClass = config.inputInvalidClass;
     this._inputErrorClass = config.inputErrorClass;
     this._errorClass = config.errorClass;
     this._form = formElement;
@@ -29,6 +30,7 @@ class FormValidator {
     );
     errorMessageElement.textContent = inputElement.validationMessage;
     errorMessageElement.classList.add(this._errorClass);
+    inputElement.classList.add(this._inputInvalidClass);
   }
   //function to hide inpur error
   _hideInputError(inputElement) {
@@ -36,6 +38,7 @@ class FormValidator {
       `#${inputElement.id}-error`
     );
     errorMessageElement.classList.remove(this._errorClass);
+    inputElement.classList.remove(this._inputInvalidClass);
   }
   //function to check input validity
   checkInputValidity(inputElement, options) {
@@ -46,25 +49,23 @@ class FormValidator {
     }
   }
 
-  //toggleButtons
-  _toggleButtonAbility(inputElements) {
-    let inValid = false;
-    inputElements.forEach((inputElement) => {
-      if (!inputElement.validity.valid) {
-        inValid = true;
-      }
-    });
-    if (inValid) {
+  //the "this.inputElements" is defined as an array using [] in _setEventListeners()
+  _checkFormValidity = () => {
+    return this.inputElements.every((input) => input.validity.valid);
+  };
+
+  _toggleButtonAbility = () => {
+    const isFormValid = this._checkFormValidity();
+    if (!isFormValid) {
       this.disableButton(this.submitButton);
     } else {
       this.enableButton(this.submitButton);
     }
-  }
-
+  };
   //addEventListeners
   _setEventListeners() {
     //now, this is used to refer to the object in question, so its properties are also able to be referred to.
-    this.inputElements = this._form.querySelectorAll(this._inputSelector);
+    this.inputElements = [...this._form.querySelectorAll(this._inputSelector)];
     this.submitButton = this._form.querySelector(this._submitButtonSelector);
 
     this.inputElements.forEach((inputElement) => {

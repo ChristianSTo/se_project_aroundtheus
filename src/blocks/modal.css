@@ -99,7 +99,7 @@
   padding-bottom: 13.26px;
 }
 
-.modal__input:invalid {
+.modal__input_invalid {
   border-bottom: 1px solid rgba(255, 0, 0, 1);
 }
 .modal__error {

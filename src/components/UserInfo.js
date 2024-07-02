@@ -8,21 +8,22 @@ class UserInfo {
 
   getUserInfo() {
     //make an object to contain name and job info
-    let info = {
+    const info = {
       name: "",
       job: "",
     };
     info.name = this._profileName;
     info.job = this._profileJob;
-
+    console.log(info);
     return info;
   }
 
-  setUserInfo() {
+  setUserInfo(name, job) {
     //add the info to the page
-    this._info = this.getUserInfo();
-    this._profileTitle.textContent = this._info.name;
-    this._profileSubTitle.textContent = this._info.job;
+    name = this._profileName;
+    job = this._profileJob;
+    this._profileTitle.textContent = name;
+    this._profileSubTitle.textContent = job;
   }
 }
 

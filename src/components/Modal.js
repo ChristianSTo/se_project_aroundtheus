@@ -6,19 +6,19 @@ class Modal {
   open() {
     this.modalSelector.classList.add("modal_opened");
     //starts to listen for esc
-    document.addEventListener("keydown", this._handleEscClose.bind(this));
+    document.addEventListener("keydown", this._handleEscClose);
   }
   close() {
     //closes modal
     this.modalSelector.classList.remove("modal_opened");
     //stops listening for esc
-    document.removeEventListener("keydown", this._handleEscClose.bind(this));
+    document.removeEventListener("keydown", this._handleEscClose);
   }
-  _handleEscClose(evt) {
+  _handleEscClose = (evt) => {
     if (evt.key === "Escape") {
       this.close();
     }
-  }
+  };
   setEventListeners() {
     this.currentCloseButton = this.modalSelector.querySelector(".modal__close");
     this.currentCloseButton.addEventListener("click", this.close.bind(this));

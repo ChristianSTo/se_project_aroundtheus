@@ -14,40 +14,31 @@ class ModalWithForm extends Modal {
     super.close();
   }
 
+  //made comments to learn from mistakes
+  //function to get the values of every input
   _getInputValues() {
-    //make the data object
-    let data = {
-      title: "",
-      subTitle: "",
-      imgTitle: "",
-      imgURL: "",
-    };
-    //get the input values from each corresponding inputs
-    this._inputFields.forEach((inputField) => {
-      //for title inputs
-      if (inputField.id === "title") {
-        data.title = inputField.value;
-      }
-      //for subtitle inputs
-      if (inputField.id === "subtitle") {
-        data.subTitle = inputField.value;
-      }
-      //for img title inputs
-      if (inputField.id === "img-title") {
-        data.imgTitle = inputField.value;
-      }
-      //for img url link inputs
-      if (inputField.id === "img-URL") {
-        data.imgURL = inputField.value;
-      }
-    });
-    return data;
+    //gets all inputs as an array
+    const inputList = [
+      ...this._modalSelector.querySelectorAll(".modal__input"),
+    ];
+
+    //make an object to contain the values
+    const inputValues = {};
+
+    //goes though the input list array, then assigns the attributes for each input
+    for (const input of inputList) {
+      inputValues[input.name] = input.value;
+    }
+    console.log(inputValues);
+    return inputValues;
   }
   setEventListeners() {
     this._modalForm.addEventListener("submit", (event) => {
       event.preventDefault();
       this.data = this._getInputValues();
+      console.log(this.data);
       this._handleSubmitForm(this.data);
+
       this.close();
     });
     super.setEventListeners();

@@ -8,6 +8,8 @@ import ModalWithImage from "../components/ModalWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import "../pages/index.css";
 import {
+  profileTitle,
+  profileSubTitle,
   inputTitle,
   inputSubTitle,
   profileEditButton,
@@ -83,9 +85,8 @@ section.renderItems();
 //function to save person. this takes data from the form,
 //then lets userinfo use it
 const handleProfileFormSubmit = (data) => {
-  const userInfo = new UserInfo(data.title, data.subTitle);
-  userInfo.getUserInfo();
-  //replaces inputs
+  const userInfo = new UserInfo(data.title, data.subtitle);
+  //add the info to the page
   userInfo.setUserInfo();
 };
 
@@ -98,6 +99,7 @@ const handleImgFormSubmit = (data) => {
     alt: data.imgTitle,
   };
   place = "prepend";
+  console.log(newCard);
   createCard(newCard);
 };
 
@@ -107,11 +109,15 @@ const editProfileModal = new ModalWithForm({
   handleSubmitForm: handleProfileFormSubmit,
 });
 const openPersonModal = () => {
-  //change the modal css
   editProfileModal.open();
-  //makes current text the input text when OPEN the modal
-  inputTitle.value = profileTitle.textContent;
-  inputSubTitle.value = profileSubTitle.textContent;
+  //makes current text the input text when open the modal
+  const userInfo = new UserInfo(
+    profileTitle.textContent,
+    profileSubTitle.textContent
+  );
+  userInfo.getUserInfo();
+  inputTitle.value = userInfo._profileName;
+  inputSubTitle.value = userInfo._profileJob;
 };
 //click edit button to open person modal
 profileEditButton.addEventListener("click", openPersonModal);
@@ -139,6 +145,7 @@ const config = {
   inputSelector: ".modal__input",
   submitButtonSelector: ".modal__submit-button",
   inactiveButtonClass: "modal__submit-button:disabled",
+  inputInvalidClass: "modal__input_invalid",
   inputErrorClass: "modal__error",
   errorClass: "modal__error_visible",
 };
