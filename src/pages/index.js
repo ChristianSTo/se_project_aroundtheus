@@ -8,8 +8,6 @@ import ModalWithImage from "../components/ModalWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import "../pages/index.css";
 import {
-  profileTitle,
-  profileSubTitle,
   inputTitle,
   inputSubTitle,
   profileEditButton,
@@ -82,12 +80,17 @@ const section = new Section(
 );
 section.renderItems();
 
+//make global instance of Userinfo class
+const userInfo = new UserInfo({
+  profileNameSelector: ".profile__title",
+  profileJobSelector: ".profile__subtitle",
+});
+
 //function to save person. this takes data from the form,
 //then lets userinfo use it
 const handleProfileFormSubmit = (data) => {
-  const userInfo = new UserInfo(data.title, data.subtitle);
   //add the info to the page
-  userInfo.setUserInfo();
+  userInfo.setUserInfo(data.title, data.subtitle);
 };
 
 //function to create new card img
@@ -99,7 +102,6 @@ const handleImgFormSubmit = (data) => {
     alt: data.imgTitle,
   };
   place = "prepend";
-  console.log(newCard);
   createCard(newCard);
 };
 
@@ -111,13 +113,9 @@ const editProfileModal = new ModalWithForm({
 const openPersonModal = () => {
   editProfileModal.open();
   //makes current text the input text when open the modal
-  const userInfo = new UserInfo(
-    profileTitle.textContent,
-    profileSubTitle.textContent
-  );
-  userInfo.getUserInfo();
-  inputTitle.value = userInfo._profileName;
-  inputSubTitle.value = userInfo._profileJob;
+  const { name, job } = userInfo.getUserInfo();
+  inputTitle.value = name;
+  inputSubTitle.value = job;
 };
 //click edit button to open person modal
 profileEditButton.addEventListener("click", openPersonModal);

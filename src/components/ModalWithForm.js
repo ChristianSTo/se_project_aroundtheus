@@ -29,16 +29,14 @@ class ModalWithForm extends Modal {
     for (const input of inputList) {
       inputValues[input.name] = input.value;
     }
-    console.log(inputValues);
+
     return inputValues;
   }
   setEventListeners() {
     this._modalForm.addEventListener("submit", (event) => {
       event.preventDefault();
       this.data = this._getInputValues();
-      console.log(this.data);
       this._handleSubmitForm(this.data);
-
       this.close();
     });
     super.setEventListeners();

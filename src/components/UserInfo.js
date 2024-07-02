@@ -1,9 +1,7 @@
 class UserInfo {
-  constructor(profileName, profileJob) {
-    this._profileName = profileName;
-    this._profileJob = profileJob;
-    this._profileTitle = document.querySelector(".profile__title");
-    this._profileSubTitle = document.querySelector(".profile__subtitle");
+  constructor({ profileNameSelector, profileJobSelector }) {
+    this._profileName = document.querySelector(profileNameSelector);
+    this._profileJob = document.querySelector(profileJobSelector);
   }
 
   getUserInfo() {
@@ -12,18 +10,15 @@ class UserInfo {
       name: "",
       job: "",
     };
-    info.name = this._profileName;
-    info.job = this._profileJob;
-    console.log(info);
+    info.name = this._profileName.textContent;
+    info.job = this._profileJob.textContent;
     return info;
   }
 
   setUserInfo(name, job) {
     //add the info to the page
-    name = this._profileName;
-    job = this._profileJob;
-    this._profileTitle.textContent = name;
-    this._profileSubTitle.textContent = job;
+    this._profileName.textContent = name;
+    this._profileJob.textContent = job;
   }
 }
 
