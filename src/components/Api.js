@@ -8,7 +8,6 @@ class Api {
   }
   //GET https://around-api.en.tripleten-services.com/v1/cards
   getInitialCards() {
-    console.log("getting cards");
     return fetch(`${this._baseUrl}/cards`, {
       method: "GET",
       headers: this._headers,
@@ -65,7 +64,23 @@ class Api {
         console.error("Error. The request has failed: ", err);
       });
   }
-
+  //DELETE https://around-api.en.tripleten-services.com/v1/cards/cardId
+  deleteCard({ cardId }) {
+    console.log("deleting");
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject("Error");
+      })
+      .catch((err) => {
+        console.error("Error. The request has failed: ", err);
+      });
+  }
   // other methods for working with the API
 }
 

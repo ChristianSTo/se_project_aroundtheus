@@ -9,15 +9,20 @@ class ModalWithConfirm extends Modal {
       ".modal__confirm-box"
     );
     this._handleConfirmAction = handleConfirmAction;
+    this.isSubmitted = false;
   }
   close() {
     super.close();
   }
+  getIsSubmitted() {
+    return this.isSubmitted;
+  }
+
   setEventListeners() {
-    this._modalConfirmBox.addEventListener("submit", (event) => {
-      event.preventDefault();
-      this._handleConfirmAction();
+    this._modalConfirmBox.addEventListener("submit", (evt) => {
+      evt.preventDefault();
       this.close();
+      this.isSubmitted = true;
     });
     super.setEventListeners();
   }

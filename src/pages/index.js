@@ -38,47 +38,68 @@ const handleImageClick = (data) => {
   previewModal.open(data);
 };
 previewModal.setEventListeners();
-const handleCloseClick = () => {
-  confirmModal.open();
-};
+
 //access the grid of cards
 const cardGallerySelector = ".gallery__grid";
 //access the card template
 const cardSelector = "#card-template";
 
-//function to create card
 let place = "append";
+const cardHolder = [];
+
+//function to create card
+const createCard = (item) => {
+  let cardId;
+  const card = new Card({
+    data: item,
+    cardSelector: cardSelector,
+    handleImageClick: handleImageClick,
+    handleTrashClick: () => {
+      confirmModal.open();
+      cardId = card.getId();
+      handleDeleteConfirm(card, cardId);
+    },
+  });
+  const cardElement = card.getView();
+  section.addItem(cardElement, place);
+
+  return { card, cardId };
+};
+const section = new Section(
+  { items: cardHolder, renderer: createCard },
+  cardGallerySelector
+);
+
+const handleDeleteConfirm = (currentCard, cardId) => {
+  const isNotSubmitted = !confirmModal.getIsSubmitted();
+  console.log(`not submitted: ${isNotSubmitted}`);
+  if (isNotSubmitted) {
+    console.log("no submission");
+  } else if (!isNotSubmitted) {
+    newApi.deleteCard({ cardId: cardId }).then((res) => {
+      console.log(res, cardId);
+    });
+    //remove card from page
+    currentCard.removeCard();
+    console.log("delete");
+  }
+};
+
+//"Are you sure?" confirmation form to delete
+const confirmModal = new ModalWithConfirm({
+  modalSelector: "#confirm-modal",
+  handleConfirmAction: handleDeleteConfirm,
+});
+confirmModal.setEventListeners();
 
 //the API's data (response) is the new "initial" array
 newApi.getInitialCards().then((data) => {
-  const createCard = (item) => {
-    const card = new Card(
-      item,
-      cardSelector,
-      handleImageClick,
-      handleCloseClick
-    );
-    const cardElement = card.getView();
-
-    section.addItem(cardElement, place);
-  };
   const section = new Section(
     { items: data, renderer: createCard },
     cardGallerySelector
   );
   section.renderItems();
 });
-
-//function to delete card
-const handleDeleteCard = () => {
-  //card.remove();
-};
-//"Are you sure?" confirmation form to delete
-const confirmModal = new ModalWithConfirm({
-  modalSelector: "#confirm-modal",
-  handleConfirmAction: handleDeleteCard,
-});
-confirmModal.setEventListeners();
 
 //make global instance of Userinfo class
 const userInfo = new UserInfo({
@@ -101,24 +122,20 @@ const handleImgFormSubmit = (inputData) => {
   console.log(inputData);
   //create new card
   console.log(inputData.imgTitle, inputData.imgURL);
-  newApi.addNewCard(inputData).then((data) => {
-    console.log(data);
-  });
-  // name: inputData.imgTitle,
-  // link: inputData.imgURL,
-
-  //newApi.addNewCard(inputData.imgTitle, inputData.imgURL);
-  // .then((data) => {
-  //   // const newCard = {
-  //   //   name: data.imgTitle,
-  //   //   link: data.imgURL,
-  //   //   alt: data.imgTitle,
-  //   // };
-  //   // place = "prepend";
-  //   // createCard(newCard);
-  //   console.log(data);
-  // });
+  newApi
+    .addNewCard({ name: inputData.imgTitle, link: inputData.imgURL })
+    .then((data) => {
+      const newCard = {
+        name: data.name,
+        link: data.link,
+        alt: data.name,
+        _id: data._id,
+      };
+      place = "prepend";
+      createCard(newCard);
+    });
 };
+
 const confirmForm = document.querySelector("#confirm-modal");
 
 //edit profile person form
