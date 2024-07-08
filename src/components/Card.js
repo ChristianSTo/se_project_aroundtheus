@@ -1,11 +1,12 @@
 //replaces the getCardElement function
 class Card {
-  constructor(data, cardSelector, handleImageClick) {
+  constructor(data, cardSelector, handleImageClick, handleCloseClick) {
     this.name = data.name;
     this.link = data.link;
     this.alt = data.alt;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
+    this._handleCloseClick = handleCloseClick;
   }
 
   //clone the template element with all its content
@@ -20,13 +21,10 @@ class Card {
   _handleToggleLike() {
     this._likeButton.classList.toggle("gallery__like-button_clicked");
   }
-  _handleDeleteCard() {
-    this._element.remove();
-  }
 
   _setEventListeners() {
     this._likeButton.addEventListener("click", () => this._handleToggleLike());
-    this._trashButton.addEventListener("click", () => this._handleDeleteCard());
+    this._trashButton.addEventListener("click", () => this._handleCloseClick());
     this._cardPhoto.addEventListener("click", () => {
       this._handleImageClick({ name: this.name, link: this.link });
     });
@@ -36,11 +34,14 @@ class Card {
     this._cardPhoto = this._element.querySelector(".gallery__image");
     this._likeButton = this._element.querySelector(".gallery__like-button");
     this._trashButton = this._element.querySelector(".gallery__delete-button");
+    // this._confirmModal = document.querySelector("#confirm-modal");
     this._cardLabel = this._element.querySelector(".gallery__label");
     this._cardPhoto.src = this.link;
     this._cardPhoto.alt = this.name;
     this._cardLabel.textContent = this.name;
-
+    // this._confirmModal.addEventListener("submit", () => {
+    //   this._element.remove();
+    // });
     this._setEventListeners();
     return this._element;
   }

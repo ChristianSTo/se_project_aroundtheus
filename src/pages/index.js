@@ -5,6 +5,8 @@ import Card from "../components/Card.js";
 import Section from "../components/Section.js";
 import ModalWithForm from "../components/ModalWithForm.js";
 import ModalWithImage from "../components/ModalWithImage.js";
+import ModalWithConfirm from "../components/ModalWithConfirm.js";
+import Api from "../components/Api.js";
 import UserInfo from "../components/UserInfo.js";
 import "../pages/index.css";
 import {
@@ -15,44 +17,20 @@ import {
   formImg,
   modalAdd,
 } from "../utils/constants.js";
-/*********************************************
-Initial cards array
-**********************************************/
 
-const initialCards = [
-  {
-    name: "Yosemite Valley",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg",
-  },
-  {
-    name: "Lake Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lake-louise.jpg",
-  },
-  {
-    name: "Bald Mountains",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/latemar.jpg",
-  },
-  {
-    name: "Vanoise National Park",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
-  },
-];
+/*********************************************
+API on top to avoid scope issues
+**********************************************/
+const newApi = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+});
 
 /*********************************************
 Functions
 **********************************************/
-/*********************************************
-Sprint 8 start
-**********************************************/
-//make sure to define the functions before trying to call them.
+
+//make sure to define the functions/consts before trying to call them.
+
 //preview photo
 const previewModal = new ModalWithImage("#photo-modal");
 const handleImageClick = (data) => {
@@ -60,7 +38,9 @@ const handleImageClick = (data) => {
   previewModal.open(data);
 };
 previewModal.setEventListeners();
-
+const handleCloseClick = () => {
+  confirmModal.open();
+};
 //access the grid of cards
 const cardGallerySelector = ".gallery__grid";
 //access the card template
@@ -68,17 +48,37 @@ const cardSelector = "#card-template";
 
 //function to create card
 let place = "append";
-const createCard = (item) => {
-  const card = new Card(item, cardSelector, handleImageClick);
-  const cardElement = card.getView();
 
-  section.addItem(cardElement, place);
+//the API's data (response) is the new "initial" array
+newApi.getInitialCards().then((data) => {
+  const createCard = (item) => {
+    const card = new Card(
+      item,
+      cardSelector,
+      handleImageClick,
+      handleCloseClick
+    );
+    const cardElement = card.getView();
+
+    section.addItem(cardElement, place);
+  };
+  const section = new Section(
+    { items: data, renderer: createCard },
+    cardGallerySelector
+  );
+  section.renderItems();
+});
+
+//function to delete card
+const handleDeleteCard = () => {
+  //card.remove();
 };
-const section = new Section(
-  { items: initialCards, renderer: createCard },
-  cardGallerySelector
-);
-section.renderItems();
+//"Are you sure?" confirmation form to delete
+const confirmModal = new ModalWithConfirm({
+  modalSelector: "#confirm-modal",
+  handleConfirmAction: handleDeleteCard,
+});
+confirmModal.setEventListeners();
 
 //make global instance of Userinfo class
 const userInfo = new UserInfo({
@@ -88,22 +88,38 @@ const userInfo = new UserInfo({
 
 //function to save person. this takes data from the form,
 //then lets userinfo use it
-const handleProfileFormSubmit = (data) => {
+const handleProfileFormSubmit = (inputData) => {
   //add the info to the page
-  userInfo.setUserInfo(data.title, data.subtitle);
+  newApi.editProfile(inputData).then((data) => {
+    console.log(data);
+  });
+  //userInfo.setUserInfo(data.title, data.subtitle);
 };
 
 //function to create new card img
-const handleImgFormSubmit = (data) => {
+const handleImgFormSubmit = (inputData) => {
+  console.log(inputData);
   //create new card
-  const newCard = {
-    name: data.imgTitle,
-    link: data.imgURL,
-    alt: data.imgTitle,
-  };
-  place = "prepend";
-  createCard(newCard);
+  console.log(inputData.imgTitle, inputData.imgURL);
+  newApi.addNewCard(inputData).then((data) => {
+    console.log(data);
+  });
+  // name: inputData.imgTitle,
+  // link: inputData.imgURL,
+
+  //newApi.addNewCard(inputData.imgTitle, inputData.imgURL);
+  // .then((data) => {
+  //   // const newCard = {
+  //   //   name: data.imgTitle,
+  //   //   link: data.imgURL,
+  //   //   alt: data.imgTitle,
+  //   // };
+  //   // place = "prepend";
+  //   // createCard(newCard);
+  //   console.log(data);
+  // });
 };
+const confirmForm = document.querySelector("#confirm-modal");
 
 //edit profile person form
 const editProfileModal = new ModalWithForm({
@@ -132,10 +148,6 @@ const openCardModal = () => {
 //click add button to open img modal
 modalAdd.addEventListener("click", openCardModal);
 newCardModal.setEventListeners();
-
-/*********************************************
-Sprint 8 end
-**********************************************/
 
 //move the config variable here
 const config = {

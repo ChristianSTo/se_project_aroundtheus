@@ -144,7 +144,7 @@
 
     <!-- Modal to open photo for Sprint 5 -->
     <div class="modal" id="photo-modal">
-      <!-- box to contain img and title of photo-->
+      <!-- box to contain img and title of photo -->
       <div class="modal__container modal__box">
         <img src="" alt="" class="modal__box-photo" />
         <p class="modal__box-title"></p>
@@ -155,6 +155,22 @@
           id="modal-photo-close"
         ></button>
       </div>
+    </div>
+    <!-- Modal to warn about deleting a card for Sprint 9-->
+    <div class="modal" id="confirm-modal">
+      <form class="modal__container modal__confirm-box">
+        <h2 class="modal__title modal__confirm-title">Are you sure?</h2>
+        <!-- Yes button -->
+        <button type="submit" class="modal__confirm-button" id="modal-confirm">
+          Yes
+        </button>
+        <!-- close button -->
+        <button
+          type="button"
+          class="modal__close"
+          id="modal-confirm-close"
+        ></button>
+      </form>
     </div>
     <!-- card template -->
     <template id="card-template">
