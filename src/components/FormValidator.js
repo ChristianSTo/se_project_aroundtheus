@@ -4,7 +4,7 @@ class FormValidator {
   constructor(config, formElement) {
     this._inputSelector = config.inputSelector;
     this._submitButtonSelector = config.submitButtonSelector;
-    this._nactiveButtonClass = config.inactiveButtonClass;
+    this._inactiveButtonClass = config.inactiveButtonClass;
     this._inputInvalidClass = config.inputInvalidClass;
     this._inputErrorClass = config.inputErrorClass;
     this._errorClass = config.errorClass;

@@ -6,6 +6,8 @@ class Card {
     handleImageClick,
     handleTrashClick,
     handleDeleteConfirm,
+    toggleLike,
+    removeLike,
   }) {
     this.name = data.name;
     this.link = data.link;
@@ -14,8 +16,9 @@ class Card {
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
     this._handleTrashClick = handleTrashClick;
-
     this._handleDeleteConfirm = handleDeleteConfirm;
+    this._toggleLike = toggleLike;
+    this._removeLike = removeLike;
   }
 
   getId() {
@@ -24,13 +27,21 @@ class Card {
   removeCard() {
     this._element.remove();
   }
-
   //clone the template element with all its content
   _getTemplate() {
     return document
       .querySelector(this._cardSelector)
       .content.querySelector(".gallery__card")
       .cloneNode(true);
+  }
+
+  getLikeStatus() {
+    if (this._likeButton.classList.contains("gallery__like-button_clicked")) {
+      this.likeStatus = true;
+    } else {
+      this.likeStatus = false;
+    }
+    return this.likeStatus;
   }
 
   //function to change like button color
@@ -40,6 +51,8 @@ class Card {
 
   _setEventListeners() {
     this._likeButton.addEventListener("click", () => this._handleToggleLike());
+    this._likeButton.addEventListener("click", () => this._toggleLike());
+
     this._trashButton.addEventListener("click", () => this._handleTrashClick());
     this._cardPhoto.addEventListener("click", () => {
       this._handleImageClick({ name: this.name, link: this.link });

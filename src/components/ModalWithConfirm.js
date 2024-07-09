@@ -11,6 +11,12 @@ class ModalWithConfirm extends Modal {
     this._handleConfirmAction = handleConfirmAction;
     this.isSubmitted = false;
   }
+  open(currentCard, cardId) {
+    this._currentCard = currentCard;
+    this._cardId = cardId;
+    super.open();
+  }
+
   close() {
     super.close();
   }
@@ -23,6 +29,8 @@ class ModalWithConfirm extends Modal {
       evt.preventDefault();
       this.close();
       this.isSubmitted = true;
+      this._handleConfirmAction(this._currentCard, this._cardId);
+      this.close();
     });
     super.setEventListeners();
   }

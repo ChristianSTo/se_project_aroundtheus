@@ -32,8 +32,14 @@ class ModalWithForm extends Modal {
     return inputValues;
   }
   setEventListeners() {
+    this.modalSubmitButton = this._modalForm.querySelector(
+      ".modal__submit-button"
+    );
+
     this._modalForm.addEventListener("submit", (evt) => {
       evt.preventDefault();
+      this.modalSubmitButton.textContent = "Saving...";
+      console.log(this.modalSubmitButton.textContent);
       this.data = this._getInputValues();
       this._handleSubmitForm(this.data);
       this.close();
