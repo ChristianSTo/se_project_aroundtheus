@@ -1,11 +1,21 @@
 import Modal from "./Modal.js";
 
 class ModalWithForm extends Modal {
-  constructor({ modalSelector, handleSubmitForm }) {
+  constructor({ modalSelector, handleSubmitForm, loadingButtonText }) {
     super(modalSelector);
     this._modalSelector = document.querySelector(modalSelector);
     this._modalForm = this._modalSelector.querySelector(".modal__form");
+    this._submitButton = this._modalForm.querySelector(".modal__submit-button");
+    this._buttonText = this._submitButton.textContent;
+    this._loadingButtonText = loadingButtonText;
     this._handleSubmitForm = handleSubmitForm;
+  }
+
+  showLoading() {
+    this._submitButton.textContent = this._loadingButtonText;
+  }
+  hideLoading() {
+    this._submitButton.textContent = this._buttonText;
   }
 
   close() {
@@ -32,17 +42,10 @@ class ModalWithForm extends Modal {
     return inputValues;
   }
   setEventListeners() {
-    this.modalSubmitButton = this._modalForm.querySelector(
-      ".modal__submit-button"
-    );
-
     this._modalForm.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this.modalSubmitButton.textContent = "Saving...";
-      console.log(this.modalSubmitButton.textContent);
       this.data = this._getInputValues();
       this._handleSubmitForm(this.data);
-      this.close();
     });
     super.setEventListeners();
   }

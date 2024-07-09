@@ -59,21 +59,37 @@ const createCard = (item) => {
     handleImageClick: handleImageClick,
     handleTrashClick: () => {
       const cardId = card.getId();
-      confirmModal.open(card, cardId);
+      confirmModal.setAction(() => handleDeleteConfirm(card, cardId));
+      confirmModal.open();
     },
     toggleLike: () => {
       const cardId = card.getId();
-      const isLiked = card.getLikeStatus();
+      const isLiked = card.isLiked();
+      //if it already is liked
       if (isLiked) {
-        newApi.addLike({ cardId: cardId, isLiked: isLiked }).then((res) => {
-          console.log(`liking: ${cardId}`);
-          console.log(res);
-        });
-      } else {
-        newApi.removeLike({ cardId: cardId, isLiked: isLiked }).then((res) => {
-          console.log(`disliking: ${cardId}`);
-          console.log(res);
-        });
+        newApi
+          .removeLike({ cardId: cardId, isLiked: isLiked })
+          .then((res) => {
+            card.setIsLiked(false);
+            console.log(`disliking: ${cardId}`);
+            console.log(res);
+          })
+          .catch((err) => {
+            console.error("Error. The request has failed: ", err);
+          });
+      }
+      //if it is not liked:
+      else {
+        newApi
+          .addLike({ cardId: cardId, isLiked: isLiked })
+          .then((res) => {
+            card.setIsLiked(true);
+            console.log(`liking: ${cardId}`);
+            console.log(res);
+          })
+          .catch((err) => {
+            console.error("Error. The request has failed: ", err);
+          });
       }
     },
   });
@@ -88,36 +104,38 @@ const section = new Section(
 );
 
 const handleDeleteConfirm = (currentCard, cardId) => {
-  const isNotSubmitted = !confirmModal.getIsSubmitted();
-  console.log(`not submitted: ${isNotSubmitted}`);
-  if (!confirmModal.getIsSubmitted()) {
-    console.log("no submission");
-  } else {
-    newApi.deleteCard({ cardId: cardId }).then((res) => {
+  newApi
+    .deleteCard({ cardId: cardId })
+    .then((res) => {
       console.log(res, cardId);
+      currentCard.removeCard();
+      console.log(`deleting: ${cardId}`);
+      confirmModal.close();
+    })
+    .catch((err) => {
+      console.error("Error. The request has failed: ", err);
     });
-    //remove card from page
-    currentCard.removeCard();
-    console.log(`deleting: ${cardId}`);
-  }
 };
 
-//"Are you sure?" confirmation form to delete
+//Confirmation form
 const confirmModal = new ModalWithConfirm({
   modalSelector: "#confirm-modal",
-  handleConfirmAction: handleDeleteConfirm,
 });
 confirmModal.setEventListeners();
 
 //the API's data (response) is the new "initial" array
-newApi.getInitialCards().then((data) => {
-  const section = new Section(
-    { items: data, renderer: createCard },
-    cardGallerySelector
-  );
-  section.renderItems();
-});
-
+newApi
+  .getInitialCards()
+  .then((data) => {
+    const section = new Section(
+      { items: data, renderer: createCard },
+      cardGallerySelector
+    );
+    section.renderItems();
+  })
+  .catch((err) => {
+    console.error("Error. The request has failed: ", err);
+  });
 //make global instance of Userinfo class
 const userInfo = new UserInfo({
   profileNameSelector: ".profile__title",
@@ -130,19 +148,29 @@ const userInfo = new UserInfo({
 const handleProfileFormSubmit = (inputData) => {
   console.log(inputData);
   //add the info to the page
+  editProfileModal.showLoading();
   newApi
     .editProfile({ name: inputData.title, about: inputData.subtitle })
     .then((data) => {
       console.log(data);
+      userInfo.setUserInfo({ name: inputData.title, job: inputData.subtitle });
+      editProfileModal.close();
+    })
+    .catch((err) => {
+      console.error("Error. The request has failed: ", err);
+    })
+    .finally(() => {
+      editProfileModal.hideLoading();
     });
-  userInfo.setUserInfo({ name: inputData.title, job: inputData.subtitle });
 };
 
 //function to create new card img
 const handleImgFormSubmit = (inputData) => {
+  newCardModal.showLoading();
   console.log(inputData);
   //create new card
   console.log(inputData.imgTitle, inputData.imgURL);
+
   newApi
     .addNewCard({ name: inputData.imgTitle, link: inputData.imgURL })
     .then((data) => {
@@ -154,6 +182,13 @@ const handleImgFormSubmit = (inputData) => {
       };
       place = "prepend";
       createCard(newCard);
+      newCardModal.close();
+    })
+    .catch((err) => {
+      console.error("Error. The request has failed: ", err);
+    })
+    .finally(() => {
+      newCardModal.hideLoading();
     });
 };
 
@@ -162,17 +197,27 @@ https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/logo.svg
  to enter into the input to test it for convenience.
  */
 const handlePfpFormSubmit = (inputData) => {
-  console.log(inputData.pfpURL);
-  console.log(`change pfp url to: ${inputData.pfpURL} `);
-  newApi.changePfp({ avatar: `${inputData.pfpURL}` }).then((res) => {
-    console.log(res);
-  });
-  userInfo.setUserPicture({ picture: inputData.pfpURL });
+  changePfpModal.showLoading();
+  newApi
+    .changePfp({ avatar: `${inputData.pfpURL}` })
+    .then((res) => {
+      console.log(res);
+      userInfo.setUserPicture({ picture: inputData.pfpURL });
+      console.log(`changed pfp url to: ${inputData.pfpURL} `);
+      changePfpModal.close();
+    })
+    .catch((err) => {
+      console.error("Error. The request has failed: ", err);
+    })
+    .finally(() => {
+      changePfpModal.hideLoading();
+    });
 };
 //edit profile person form
 const editProfileModal = new ModalWithForm({
   modalSelector: "#profile-edit-modal",
   handleSubmitForm: handleProfileFormSubmit,
+  loadingButtonText: "Saving",
 });
 const openPersonModal = () => {
   editProfileModal.open();
@@ -185,6 +230,7 @@ const openPersonModal = () => {
 const changePfpModal = new ModalWithForm({
   modalSelector: "#changePfp-modal",
   handleSubmitForm: handlePfpFormSubmit,
+  loadingButtonText: "Saving",
 });
 const openPfpModal = () => {
   changePfpModal.open();
@@ -206,6 +252,7 @@ editProfileModal.setEventListeners();
 const newCardModal = new ModalWithForm({
   modalSelector: "#img-create-modal",
   handleSubmitForm: handleImgFormSubmit,
+  loadingButtonText: "Saving",
 });
 const openCardModal = () => {
   newCardModal.open();

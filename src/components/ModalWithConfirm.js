@@ -1,36 +1,28 @@
 import Modal from "./Modal.js";
 
 class ModalWithConfirm extends Modal {
-  constructor({ modalSelector, handleConfirmAction }) {
+  constructor({ modalSelector }) {
     //
     super(modalSelector);
     this._modalSelector = document.querySelector(modalSelector);
-    this._modalConfirmBox = this._modalSelector.querySelector(
-      ".modal__confirm-box"
-    );
-    this._handleConfirmAction = handleConfirmAction;
-    this.isSubmitted = false;
+    this._modalForm = this._modalSelector.querySelector(".modal__form");
   }
-  open(currentCard, cardId) {
-    this._currentCard = currentCard;
-    this._cardId = cardId;
-    super.open();
+
+  //Make it generalized. The action/info can be specified elsewhere when needed.
+  setAction(action) {
+    this._handleFormSubmit = action;
   }
 
   close() {
     super.close();
   }
-  getIsSubmitted() {
-    return this.isSubmitted;
-  }
 
   setEventListeners() {
-    this._modalConfirmBox.addEventListener("submit", (evt) => {
+    this._modalForm.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this.close();
-      this.isSubmitted = true;
-      this._handleConfirmAction(this._currentCard, this._cardId);
-      this.close();
+      if (this._handleFormSubmit) {
+        this._handleFormSubmit();
+      }
     });
     super.setEventListeners();
   }
