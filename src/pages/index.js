@@ -29,6 +29,30 @@ API on top to avoid scope issues
 const newApi = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
 });
+//make global instance of Userinfo class
+const userInfo = new UserInfo({
+  profileNameSelector: ".profile__title",
+  profileJobSelector: ".profile__subtitle",
+  profilePictureSelector: ".profile__picture",
+});
+
+// Function to fetch the api info to start out the page.
+const fetchAndSetUserInfo = () => {
+  newApi
+    .getUserInfo()
+    .then((data) => {
+      console.log(data);
+      userInfo.setUserInfo({
+        name: data.name,
+        job: data.about,
+        picture: data.avatar,
+      });
+    })
+    .catch((err) => {
+      console.error("Error fetching user info: ", err);
+    });
+};
+fetchAndSetUserInfo();
 
 /*********************************************
 Functions
@@ -104,6 +128,7 @@ const section = new Section(
 );
 
 const handleDeleteConfirm = (currentCard, cardId) => {
+  confirmModal.showLoading();
   newApi
     .deleteCard({ cardId: cardId })
     .then((res) => {
@@ -114,12 +139,16 @@ const handleDeleteConfirm = (currentCard, cardId) => {
     })
     .catch((err) => {
       console.error("Error. The request has failed: ", err);
+    })
+    .finally(() => {
+      confirmModal.hideLoading();
     });
 };
 
 //Confirmation form
 const confirmModal = new ModalWithConfirm({
   modalSelector: "#confirm-modal",
+  loadingButtonText: "Saving",
 });
 confirmModal.setEventListeners();
 
@@ -136,12 +165,6 @@ newApi
   .catch((err) => {
     console.error("Error. The request has failed: ", err);
   });
-//make global instance of Userinfo class
-const userInfo = new UserInfo({
-  profileNameSelector: ".profile__title",
-  profileJobSelector: ".profile__subtitle",
-  profilePictureSelector: ".profile__picture",
-});
 
 //function to save person. this takes data from the form,
 //then lets userinfo use it
