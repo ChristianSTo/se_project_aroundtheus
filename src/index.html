@@ -20,12 +20,15 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img
-            src="<%=require('./images/jacques-cousteau.jpg')%>"
-            alt="Jacques Face"
-            class="profile__picture"
-          />
-
+          <div class="profile__picture-container">
+            <!-- use background img instead for Sprint 9 -->
+            <img
+              class="profile__picture profile__pfpImg"
+              src="<%=require('./images/jacques-cousteau.jpg')%>"
+              alt="jacques-cousteau"
+            />
+            <div class="profile__picture-overlay profile__pfpImg"></div>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title">Jacques Cousteau</h1>
             <button
@@ -144,7 +147,7 @@
 
     <!-- Modal to open photo for Sprint 5 -->
     <div class="modal" id="photo-modal">
-      <!-- box to contain img and title of photo-->
+      <!-- box to contain img and title of photo -->
       <div class="modal__container modal__box">
         <img src="" alt="" class="modal__box-photo" />
         <p class="modal__box-title"></p>
@@ -155,6 +158,57 @@
           id="modal-photo-close"
         ></button>
       </div>
+    </div>
+    <!-- Modal for confirmation for Sprint 9-->
+    <div class="modal" id="confirm-modal">
+      <form class="modal__form modal__container modal__confirm-box">
+        <h2 class="modal__title modal__confirm-title">Are you sure?</h2>
+        <!-- Yes button -->
+        <button
+          type="submit"
+          class="modal__submit-button modal__confirm-button"
+          id="modal-confirm"
+        >
+          Yes
+        </button>
+        <!-- close button -->
+        <button
+          type="button"
+          class="modal__close"
+          id="modal-confirm-close"
+        ></button>
+      </form>
+    </div>
+    <!-- Modal about changing pfp for Sprint 9-->
+    <div class="modal" id="changePfp-modal">
+      <form class="modal__form modal__container modal__confirm-box">
+        <h2 class="modal__title modal__confirm-title">
+          Change Profile Picture
+        </h2>
+        <input
+          type="url"
+          class="modal__input"
+          name="pfpURL"
+          id="pfp-URL"
+          placeholder="Profile Picture URL"
+          required
+        />
+        <span class="modal__error modal__error-url" id="pfp-URL-error"> </span>
+        <!-- Save button -->
+        <button
+          type="submit"
+          class="modal__submit-button modal__savePfp-button"
+          id="modal-save-pfp"
+        >
+          Save
+        </button>
+        <!-- close button -->
+        <button
+          type="button"
+          class="modal__close"
+          id="modal-pfp-close"
+        ></button>
+      </form>
     </div>
     <!-- card template -->
     <template id="card-template">
