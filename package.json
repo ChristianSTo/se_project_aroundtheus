@@ -29,6 +29,7 @@
     "webpack-dev-server": "4.9.3"
   },
   "dependencies": {
+    "body-parser": "^1.20.3",
     "core-js": "3.23.5"
   }
 }
